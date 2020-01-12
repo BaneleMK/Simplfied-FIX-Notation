@@ -5,7 +5,7 @@ package ascii.fix_message;
  */
 public class fix_message {
 
-    private long ascii_sum(String data){
+    private static long ascii_sum(String data){
         long tempsum = 0;
         int length = data.length();
         for (int i = 0; i < length ; i++) {
@@ -21,7 +21,7 @@ public class fix_message {
     // the message_elements are as follows "ID;iNSTRUMENT;QUANTITY;MARKET;PRICE"
     // example of message_elements "0001;guitar;4;rando;10000"
     // example output "ID=0001|Instr=guitar|Quant=4|Market=rando|Price=10000|10=185"
-    public String makefix(String message_elements){
+    public static String makefix(String message_elements){
         String elements [] = message_elements.split(";");
         String fixmessage = 
         "ID="+elements[0]+
@@ -35,7 +35,7 @@ public class fix_message {
 
     // This is just taking the full fixmessage recieved
     // it checking if the checksum matches up or not to the data contained
-    public boolean checksum_verification(String message){
+    public static boolean checksum_verification(String message){
         String elements [] = message.split("10=");
         if (ascii_checksum(elements[0]) != Integer.valueOf(elements[1]))
             return false;
@@ -43,38 +43,38 @@ public class fix_message {
             return true;
     }
 
-    public String get_ID(String fixmessage){
+    public static String get_ID(String fixmessage){
         String[] elem = fixmessage.split("\\|");
         String ID = elem[0].split("=")[1];
         return ID;
     }
 
-    public String get_Instrument(String fixmessage){
+    public static String get_Instrument(String fixmessage){
         String[] elem = fixmessage.split("\\|");
         String instr = elem[1].split("=")[1];
         return instr;
     }
 
-    public int get_Quantity(String fixmessage){
+    public static int get_Quantity(String fixmessage){
         String[] elem = fixmessage.split("\\|");
         int quant = Integer.parseInt(elem[2].split("=")[1]);
         return quant;
     }
 
-    public String get_Market(String fixmessage){
+    public static String get_Market(String fixmessage){
         String[] elem = fixmessage.split("\\|");
         String market = elem[3].split("=")[1];
         return market;
     }
 
-    public int get_Price(String fixmessage){
+    public static int get_Price(String fixmessage){
         String[] elem = fixmessage.split("\\|");
         int price = Integer.parseInt(elem[4].split("=")[1]);
         return price;
     }
 
     // this takes the data without the checksum and counts the ascii to come up with the checksum number
-    private long ascii_checksum(String data){
+    private static long ascii_checksum(String data){
         long temp_sum = ascii_sum(data);
         long temp_checksum = 0;
         temp_checksum = temp_sum % 256;
